@@ -131,7 +131,7 @@ public class AccountHolderController {
 			throw new NoSuchResourceFoundException("You enter a negative number");
 		} else if(balance.getInterestRate() <=0 || balance.getInterestRate() >=1) {
 			throw new NoSuchResourceFoundException("Invalid interest rate");
-		} else if(balance.getTerm() < 1) {
+		} else if(balance.getTerm() >= 1) {
 			throw new NoSuchResourceFoundException("Invalid term");
 		} else {
 			accountHolder.get(id).addCDAccount(balance);

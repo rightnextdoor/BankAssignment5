@@ -70,6 +70,10 @@ public class CDAccount extends BankAccount {
 				;
 	}
 	
+	public static void setTerm(int term) {
+		CDAccount.term = term;
+	}
+	
 	@Override
 	public boolean deposit(double amount) {
 		return false;
