@@ -1,4 +1,12 @@
-package com.meritamerica.assignment5.models;
+package com.meritamerica.assignment5.Bank.Transaction;
+
+import javax.persistence.Entity;
+
+import com.meritamerica.assignment5.Bank.Exception.ExceedsAvailableBalanceException;
+import com.meritamerica.assignment5.Bank.Exception.ExceedsFraudSuspicionLimitException;
+import com.meritamerica.assignment5.Bank.Exception.NegativeAmountException;
+import com.meritamerica.assignment5.models.BankAccount;
+
 
 public class WithdrawTransaction extends Transaction{
 	//public double amount;

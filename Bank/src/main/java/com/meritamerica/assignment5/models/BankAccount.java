@@ -6,16 +6,61 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.meritamerica.assignment5.Bank.Transaction.Transaction;
+
+
+@MappedSuperclass
 public abstract class BankAccount {
 	
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column
+	private long id;
+	
+	@ManyToOne
+	@JoinColumn(name = "account_holder_id")
+	@JsonIgnore
+	protected AccountHolder accountHolder;
+	
+	//@Column(name = "Balance")
+	@Min(value = 0, message="Balance must be positive")
 	private double  balance ;
+	
+	//@Column(name = "InterestRate")
+	@DecimalMin (value = "0.0", message = "interestRate > 0.0")
+	@DecimalMax (value = "1.0", message = "interestRate < 1.0")
 	private double interestRate;
+	
+	//@Column(name = "AccountNumber")
 	private long accountNumber;
+	
+	//@Column(name = "FutereValue")
 	private double futureValue;
-	private double accountTotal;
+	
+	//@Column(name = "Date")
 	private Date date;
+	
+	//@Column(name = "Term")
+	//@Min(value = 1, message="Term must be higher then 0")
 	private int term;
-	List<Transaction> transactions;
+	//List<Transaction> transactions;
 	
 	
 	 BankAccount(double balance, double interestRate){
@@ -35,26 +80,60 @@ public abstract class BankAccount {
 		this.date= date;
 	}
 	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	
+	public int getTerm() {
+		return term;
+	}
+
+	public void setTerm(int term) {
+		this.term = term;
+	}
 
 	public long getAccountNumber() 
 	{
-		return this.accountNumber;
+		return accountNumber;
 	}
 	
 	public double getBalance()
 	{
-		return this.balance;
+		return balance;
 	}
 	public double getInterestRate() 
 	{
-		return this.interestRate;
+		return interestRate;
 	}
 	
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
+	public void setInterestRate(double interestRate) {
+		this.interestRate = interestRate;
+	}
+
+	public void setAccountNumber(long accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+
 	public boolean withdraw(double amount)
 	{
-		if((this.balance - amount) >= 0) 
+		if((balance - amount) >= 0) 
 		{
-			this.balance = this.balance - amount;
+			balance = balance - amount;
 			return true;
 		} else
 			{
@@ -65,9 +144,9 @@ public abstract class BankAccount {
 	
 	public boolean deposit(double amount) 
 	{
-		if(((this.balance + amount) <= 250000) && amount > 0)
+		if(((balance + amount) <= 250000) && amount > 0)
 		{
-			this.balance = this.balance + amount;
+			balance = balance + amount;
 			return true;
 		} else 
 			return false;	
@@ -76,7 +155,7 @@ public abstract class BankAccount {
 	
 	public double futureValue(int term) 
 	{
-		this.futureValue = this.balance * Math.pow((1+ interestRate ), term);
+		futureValue = balance * Math.pow((1+ interestRate ), term);
 		return this.futureValue;
 		
 	}
@@ -89,24 +168,24 @@ public abstract class BankAccount {
 			try 
 			{
 				DateFormat startDate = new SimpleDateFormat("dd/MM/yyyy"); //sets format
-				Date date = (Date)startDate.parse(string); //converts to date
-	        	this.date = date;
-	        	return this.date;				// returns correct date, but with hrs/min/sec at 00:00:00 didnt know how to eliminate this. 
+				Date dates = (Date)startDate.parse(string); //converts to date
+	        	date = dates;
+	        	return date;				// returns correct date, but with hrs/min/sec at 00:00:00 didnt know how to eliminate this. 
 			} catch(ParseException e)
 			{
 				System.out.println();
 			}
-			return this.date;
+			return date;
 	}
 	
 	public  Date getOpenedOn()
 	{
-		return this.date;
+		return date;
 	}
 	
 	//ASssignment4===
 	
-	
+/*	
 	public void addTransaction(Transaction transaction){
 	//	if(MeritBank.processTransaction(true)) {}
 		transactions.add(transaction);	
@@ -117,7 +196,7 @@ public abstract class BankAccount {
 	public List<Transaction>getTransactions(){
 		return transactions;
 	}
-	
+	*/
 	public static BankAccount readFromString()
 	{
 		return null;

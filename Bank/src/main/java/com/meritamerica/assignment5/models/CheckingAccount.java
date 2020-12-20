@@ -5,14 +5,34 @@ import java.lang.NumberFormatException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OrderColumn;
+import javax.persistence.Table;
+
+import com.meritamerica.assignment5.Bank.Service.MeritBank;
+
+
+
+@Entity
 public class CheckingAccount extends BankAccount{
 	
-	private static double interestRate = 0.0001;
-	
-	private static Date date ;
 	private static long accountNumber;
+	private static double interestRate = 0.0001;
+	private static Date date ;
 	private static double balance;
 	
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "accountHolder_id")
+	private AccountHolder[] accountHolder;
 
 	CheckingAccount() {
 		super(MeritBank.getNextAccountNumber(),balance,interestRate, date);
@@ -49,9 +69,6 @@ public class CheckingAccount extends BankAccount{
 			interestRate, date);
 			return checking;
 	}
-	
-	
-	
 	
 }
 

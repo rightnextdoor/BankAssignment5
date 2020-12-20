@@ -2,15 +2,30 @@ package com.meritamerica.assignment5.models;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.meritamerica.assignment5.Bank.Service.MeritBank;
+
+@Entity
 public class SavingsAccount extends BankAccount{
-	
-	
-	
 	
 	private static Date date;
 	private static long accountNumber; 
 	private static double balance;
 	private static double interestRate = 0.01 ;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "savingsAccount_id", referencedColumnName = "id",nullable=false)
+	private AccountHolder[] accountHolder;
 	
 	SavingsAccount() {
 		super(MeritBank.getNextAccountNumber(),balance, interestRate);
@@ -44,4 +59,7 @@ public class SavingsAccount extends BankAccount{
 		return savings;
 
 	}
+	
+	
+	
 }

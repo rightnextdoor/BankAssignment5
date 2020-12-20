@@ -1,10 +1,20 @@
-package com.meritamerica.assignment5.models;
+package com.meritamerica.assignment5.Bank.Transaction;
 
 import java.util.Date;
+
+import javax.persistence.Entity;
+
+import com.meritamerica.assignment5.Bank.Exception.ExceedsAvailableBalanceException;
+import com.meritamerica.assignment5.Bank.Exception.ExceedsFraudSuspicionLimitException;
+import com.meritamerica.assignment5.Bank.Exception.NegativeAmountException;
+import com.meritamerica.assignment5.models.BankAccount;
+
 import java.io.*;
 import java.io.ObjectInputStream.GetField;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
+
 public abstract class Transaction {
 
 	BankAccount sourceAccount;

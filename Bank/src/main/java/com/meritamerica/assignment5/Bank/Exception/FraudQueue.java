@@ -1,6 +1,11 @@
-package com.meritamerica.assignment5.models;
+package com.meritamerica.assignment5.Bank.Exception;
 
 import java.util.List;
+
+import javax.persistence.Entity;
+
+import com.meritamerica.assignment5.Bank.Transaction.Transaction;
+
 
 public class FraudQueue {
 

@@ -1,11 +1,37 @@
-package com.meritamerica.assignment5.models;
+package com.meritamerica.assignment5.Bank.Service;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 
+import javax.persistence.Entity;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+
+import com.meritamerica.assignment5.Bank.Exception.ExceedsAvailableBalanceException;
+import com.meritamerica.assignment5.Bank.Exception.ExceedsCombinedBalanceLimitException;
+import com.meritamerica.assignment5.Bank.Exception.ExceedsFraudSuspicionLimitException;
+import com.meritamerica.assignment5.Bank.Exception.FraudQueue;
+import com.meritamerica.assignment5.Bank.Exception.NegativeAmountException;
+import com.meritamerica.assignment5.Bank.Repository.AccountRepository;
+import com.meritamerica.assignment5.Bank.Repository.CDAccountRepository;
+import com.meritamerica.assignment5.Bank.Repository.CDOfferingRepository;
+import com.meritamerica.assignment5.Bank.Repository.CheckingAccountRepository;
+import com.meritamerica.assignment5.Bank.Repository.SavingsAccountRepository;
+import com.meritamerica.assignment5.Bank.Transaction.Transaction;
+import com.meritamerica.assignment5.models.AccountHolder;
+import com.meritamerica.assignment5.models.BankAccount;
+import com.meritamerica.assignment5.models.CDAccount;
+import com.meritamerica.assignment5.models.CDOffering;
+import com.meritamerica.assignment5.models.CheckingAccount;
+import com.meritamerica.assignment5.models.SavingsAccount;
+
+@Service
 public class MeritBank{
 	
 	private static AccountHolder[] accounts = new AccountHolder[0];
@@ -16,6 +42,8 @@ public class MeritBank{
 	private static CDOffering bestCDOffering;
 	private static CDOffering secondBestCDOffering;
 	private static int counterA = 0;//counter accounts at addAccountHolder()
+	
+	
 	
 	public static void addAccountHolder(AccountHolder accountHolder) 
 	{
@@ -117,7 +145,7 @@ public class MeritBank{
 
 			for(int i = index ; i < cdofferingsCounter + index; i ++) //runs the amount of cd offerings
 			{ 
-				CDOffering.readFromString(values.get(i)); 
+				//CDOffering.readFromString(values.get(i)); 
 				
 			} 
 
@@ -293,6 +321,64 @@ public class MeritBank{
 		return null;
 	}
 	
+	@Autowired
+	AccountRepository accountHolderRepository;
 	
+	@Autowired
+	CDAccountRepository cdAccountRepository;
+	
+	@Autowired
+	CheckingAccountRepository checkingAccountRepository;
+	
+	@Autowired
+	SavingsAccountRepository savingsAccountRepository;
+	
+	@Autowired
+	CDOfferingRepository cdOfferingRepository;
+	
+	
+	public AccountHolder postAccountHolder(AccountHolder accountHolder) {
+		return accountHolderRepository.save(accountHolder);
+	}
+	
+	public List<AccountHolder> getAccountHoldersRepository(){
+		return accountHolderRepository.findAll();
+	}
+	
+	public AccountHolder getAccountHolderById(Long id) {
+		return accountHolderRepository.getOne(id);
+	}
+	
+	public SavingsAccount postSavingsAccount(SavingsAccount savingsAccount, int id) {
+		return savingsAccountRepository.save(savingsAccount);
+	}
+	
+	public List<SavingsAccount> getSavingsAccountsRepository(){
+		return savingsAccountRepository.findAll();
+	}
+	
+	public CDAccount postCDAccount(CDAccount cdAccount, int id) {
+		return cdAccountRepository.save(cdAccount);
+	}
+	
+	public List<CDAccount> getCDAccountsRepository(){
+		return cdAccountRepository.findAll();
+	}
+	
+	public CheckingAccount postCheckingAccount(CheckingAccount checkingAccount, int id) {
+		return checkingAccountRepository.save(checkingAccount);
+	}
+	
+	public List<CheckingAccount> getCheckingAccountsRepository(){
+		return checkingAccountRepository.findAll();
+	}
+	
+	public CDOffering postCDOffering(CDOffering cdOffering) {
+		return cdOfferingRepository.save(cdOffering);
+	}
+	
+	public List<CDOffering> getCDOfferingsRepository(){
+		return cdOfferingRepository.findAll();
+	}
 	
 }
